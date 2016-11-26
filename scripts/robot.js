@@ -9,14 +9,10 @@ module.exports = function(robot){
         res.send('world');
     });
     robot.respond(/google (.*)/i, function(res){
-        const keyword = res.match[1];
+        let keyword = res.match[1];
+        keyword = querystring.escape(keyword);
         cheerioTest(res, keyword);
     });
-    //         robot.http("https://www.google.com.tw/#q=#{word}")
-    //             .header('User-Agent', 'Mozilla/5.0')
-    //             .get() (err, res, body) ->
-    //
-    //             res.send "Catching #{word} successful"
 }
 //
 function cheerioTest(user, keyword){
