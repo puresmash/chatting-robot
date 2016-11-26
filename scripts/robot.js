@@ -1,6 +1,50 @@
 
+var cheerio = require('cheerio')
+var request = require('request')
+var querystring = require('querystring')
+var iconvlite = require('iconv-lite')
+
 module.exports = function(robot){
     robot.respond(/hello/, function(res){
         res.send('world');
+    });
+    robot.respond(/google (.*)/i, function(res){
+        const keyword = res.match[1];
+        cheerioTest(res, keyword);
+    });
+    //         robot.http("https://www.google.com.tw/#q=#{word}")
+    //             .header('User-Agent', 'Mozilla/5.0')
+    //             .get() (err, res, body) ->
+    //
+    //             res.send "Catching #{word} successful"
+}
+//
+function cheerioTest(user, keyword){
+    const options = {
+        url: `https://www.google.com/search?gws_rd=ssl&num=3&q=${keyword}`,
+        header: {
+            'User-Agnet': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36'
+        },
+        encoding: null,
+        method: 'GET'
+    }
+    request(options, function(error, response, body){
+        if (!error && response.statusCode == 200) {
+            const content = iconvlite.decode(body, 'big5');
+            const $ = cheerio.load(content);
+            // debug
+            // console.log($('div.g').length);
+            const ele = $('div.g').first();
+
+            const linkEle = ele.find('h3.r a');
+            const linkText = linkEle.first().text();
+            let temp = linkEle.attr('href');
+            const link = querystring.parse(temp)['/url?q'];
+            const desc = ele.find('span.st').text();
+            const result = `${linkText}\n${link}\n${desc}`;
+            console.log(result);
+            user.send(result);
+
+        }
     });
 }
