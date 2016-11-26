@@ -3,6 +3,7 @@ var cheerio = require('cheerio')
 var request = require('request')
 var querystring = require('querystring')
 var iconvlite = require('iconv-lite')
+var fs = require('fs')
 
 module.exports = function(robot){
     robot.respond(/hello/, function(res){
@@ -29,18 +30,31 @@ function cheerioTest(user, keyword){
             const content = iconvlite.decode(body, 'big5');
             const $ = cheerio.load(content);
             // debug
-            // console.log($('div.g').length);
+            console.log($('div.g').length);
             const ele = $('div.g').first();
 
-            const linkEle = ele.find('h3.r a');
-            const linkText = linkEle.first().text();
-            let temp = linkEle.attr('href');
-            const link = querystring.parse(temp)['/url?q'];
-            const desc = ele.find('span.st').text();
-            const result = `${linkText}\n${link}\n${desc}`;
-            console.log(result);
+            const result = existSpecialView(ele)? getWithoutDesc(ele) : getWithDesc(ele);
             user.send(result);
 
         }
     });
+    // .pipe(fs.createWriteStream('debug.html'));
+}
+function existSpecialView(ele){
+    return ele.find('h3._X8d a').length != 0
+}
+function getWithDesc(ele){
+    const linkEle = ele.find('h3.r a');
+    const linkText = linkEle.first().text();
+    let temp = linkEle.attr('href');
+    const link = querystring.parse(temp)['/url?q'];
+    const desc = ele.find('span.st').text();
+    return `${linkText}\n${link}\n${desc}`;
+}
+function getWithoutDesc(ele){
+    const linkEle = ele.find('h3._X8d a');
+    const linkText = linkEle.first().text();
+    let temp = linkEle.attr('href');
+    const link = querystring.parse(temp)['/url?q'];
+    return `${linkText}\n${link}`;
 }
