@@ -1,4 +1,6 @@
 
+"use strict";
+
 var cheerio = require('cheerio')
 var request = require('request')
 var querystring = require('querystring')
@@ -30,7 +32,7 @@ function cheerioTest(user, keyword){
             const content = iconvlite.decode(body, 'big5');
             const $ = cheerio.load(content);
             // debug
-            console.log($('div.g').length);
+            // console.log($('div.g').length);
             const ele = $('div.g').first();
 
             const result = existSpecialView(ele)? getWithoutDesc(ele) : getWithDesc(ele);
