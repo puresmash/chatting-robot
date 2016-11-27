@@ -6,6 +6,7 @@ var request = require('request')
 var querystring = require('querystring')
 var iconvlite = require('iconv-lite')
 var fs = require('fs')
+const LINE_TOKEN = process.env.HUBOT_LINE_TOKEN;
 
 module.exports = function(robot){
     robot.respond(/hello/, function(res){
@@ -16,16 +17,71 @@ module.exports = function(robot){
         keyword = querystring.escape(keyword);
         cheerioTest(res, keyword);
     });
-    robot.router.post('/', function(req, res){
+    robot.router.get('/', function(req, res){
         robot.logger.debug('GET LINE MSG');
         res.send('GET MSG');
     });
+    robot.router.post('/', function(req, res){
+        robot.logger.debug('GET LINE MSG');
+        robot.logger.debug(req.body);
+
+        let msgObj = getLineMsg(req.body);
+        const replyToken = msgObj.replyToken;
+        const msg = msgObj.msg;
+        const reply = formatReplyMsg(replyToken, `Get msg: ${msg}`);
+        replyLineMsg(res, reply, robot.logger);
+        res.send('GET MSG');
+    });
 }
-//
+// Line Message API
+function getLineMsg(body){
+    const msg = body.events[0].message.text;
+    const replyToken = body.events[0].replyToken;
+    return {msg: msg, replyToken: replyToken};
+}
+function formatReplyMsg(replyToken, text){
+    const reply = {
+        "replyToken": replyToken,
+        "messages":[
+            {
+                "type": "text",
+                "text": text
+            }
+        ]
+    }
+    return reply;
+}
+function replyLineMsg(user, replyObj, logger){
+    const MsgType = {
+        Text: 'text',
+        Image: 'image',
+        Video: 'video',
+        Audio: 'audio',
+        Location: 'location',
+        Sticker: 'sticker'
+    }
+    const options = {
+        url: 'https://api.line.me/v2/bot/message/reply',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${LINE_TOKEN}`
+        },
+        method: 'POST',
+        body: JSON.stringify(replyObj)
+    }
+    request(options, function(error, response, body){
+        logger.debug(options.header);
+        logger.debug(response.statusCode);
+        logger.debug(body);
+        // user.send(`GET YOUR MSG: ${data}`);
+    });
+
+}
+// Google Search
 function cheerioTest(user, keyword){
     const options = {
         url: `https://www.google.com/search?gws_rd=ssl&num=3&q=${keyword}`,
-        header: {
+        headers: {
             'User-Agnet': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36'
         },
         encoding: null,
