@@ -16,6 +16,9 @@ module.exports = function(robot){
         keyword = querystring.escape(keyword);
         cheerioTest(res, keyword);
     });
+    robot.router.post('/', function(req, res){
+        robot.logger.debug('GET LINE MSG');
+    });
 }
 //
 function cheerioTest(user, keyword){
