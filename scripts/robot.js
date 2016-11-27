@@ -18,6 +18,7 @@ module.exports = function(robot){
     });
     robot.router.post('/', function(req, res){
         robot.logger.debug('GET LINE MSG');
+        res.send('GET MSG');
     });
 }
 //
