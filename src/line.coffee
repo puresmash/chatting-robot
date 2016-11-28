@@ -92,6 +92,7 @@ class LineStreaming extends EventEmitter
             text = req.body.events[0].message.text;
             id = req.body.events[0].message.id;
             userId = req.body.events[0].source.userId;
+            @robot.logger.debug util.inspect req.headers, false, null
             headerSignature = req.headers['X-Line-Signature'];
             @robot.logger.debug headerSignature
             isValid = @validateSignature text, headerSignature
