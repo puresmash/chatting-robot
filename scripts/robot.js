@@ -6,32 +6,48 @@ var request = require('request')
 var querystring = require('querystring')
 var iconvlite = require('iconv-lite')
 var fs = require('fs')
+// var LineAdapter = require('./LineAdapter')
+var util = require('util')
 const LINE_TOKEN = process.env.HUBOT_LINE_TOKEN;
 
 module.exports = function(robot){
-    robot.respond(/hello/, function(res){
+    robot.respond(/hello/i, function(res){
+        console.log('world');
         res.send('world');
     });
+
     robot.respond(/google (.*)/i, function(res){
         let keyword = res.match[1];
         keyword = querystring.escape(keyword);
         cheerioTest(res, keyword);
     });
-    robot.router.get('/', function(req, res){
-        robot.logger.debug('GET LINE MSG');
-        res.send('GET MSG');
+    // Test on web
+    // robot.router.get('/', function(req, res){
+    //     robot.logger.debug('GET LINE MSG');
+    //     res.send('GET MSG');
+    // });
+    robot.respond(/line (.*)/i, function(res){
+        let keyword = res.match[1];
+        let envelope = {
+            replyToken: 'testing'
+        }
+        let msg = `GET: ${keyword}`;
+        console.log(msg);
+        // res.reply(envelope, msg);
+        res.reply(envelope, msg);
     });
-    robot.router.post('/', function(req, res){
-        robot.logger.debug('GET LINE MSG');
-        robot.logger.debug(req.body);
-
-        let msgObj = getLineMsg(req.body);
-        const replyToken = msgObj.replyToken;
-        const msg = msgObj.msg;
-        const reply = formatReplyMsg(replyToken, `Get msg: ${msg}`);
-        replyLineMsg(res, reply, robot.logger);
-        res.send('GET MSG');
-    });
+    // console.log(robot.listeners[0]);
+    // robot.router.post('/', function(req, res){
+    //     robot.logger.debug('GET LINE MSG');
+    //     robot.logger.debug(req.body);
+    //     // console.log(util.inspect(LineAdapter, false, null))
+    //     // let msgObj = getLineMsg(req.body);
+    //     // const replyToken = msgObj.replyToken;
+    //     // const msg = msgObj.msg;
+    //     // const reply = formatReplyMsg(replyToken, `Get msg: ${msg}`);
+    //     // replyLineMsg(res, reply, robot.logger);
+    //     // res.send('GET MSG');
+    // });
 }
 // Line Message API
 function getLineMsg(body){

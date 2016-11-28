@@ -1,11 +1,13 @@
 {
-  "name": "myhubot",
-  "version": "0.0.0",
+  "name": "hubot-myhubot",
+  "version": "0.1.0",
   "private": true,
   "author": "swat <puresmash@gmail.com>",
   "description": "A simple helpful robot for your Company",
+  "main": "./src/line",
   "dependencies": {
     "cheerio": "^0.22.0",
+    "crypto-js": "^3.1.8",
     "hubot": "^2.19.0",
     "hubot-diagnostics": "0.0.1",
     "hubot-google-images": "^0.2.6",
@@ -13,6 +15,7 @@
     "hubot-help": "^0.2.0",
     "hubot-heroku-keepalive": "^1.0.2",
     "hubot-maps": "0.0.2",
+    "hubot-myhubot": "file:.",
     "hubot-pugme": "^0.1.0",
     "hubot-redis-brain": "0.0.3",
     "hubot-rules": "^0.1.1",
@@ -20,7 +23,14 @@
     "hubot-shipit": "^0.2.0",
     "hubot-slack": "^4.2.2",
     "iconv-lite": "^0.4.15",
+    "parent-require": "^1.0.0",
     "request": "^2.79.0"
+  },
+  "peerDependencies": {
+    "hubot": ">=2.0"
+  },
+  "devDependencies": {
+    "coffee-script": ">=1.2.0"
   },
   "engines": {
     "node": "5.9.1"
