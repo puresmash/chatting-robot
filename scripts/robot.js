@@ -20,6 +20,10 @@ module.exports = function(robot){
         keyword = querystring.escape(keyword);
         cheerioTest(res, keyword);
     });
+
+    robot.respond(/tina/i, function(res){
+        res.reply('Happy Birthday~');
+    });
     // Test on web
     // robot.router.get('/', function(req, res){
     //     // robot.logger.debug('GET LINE MSG');
