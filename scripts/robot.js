@@ -6,14 +6,13 @@ var request = require('request')
 var querystring = require('querystring')
 var iconvlite = require('iconv-lite')
 var fs = require('fs')
-// var LineAdapter = require('./LineAdapter')
 var util = require('util')
 const LINE_TOKEN = process.env.HUBOT_LINE_TOKEN;
 
 module.exports = function(robot){
     robot.respond(/hello/i, function(res){
         console.log('world');
-        res.send('world');
+        res.reply('world');
     });
 
     robot.respond(/google (.*)/i, function(res){
@@ -26,16 +25,6 @@ module.exports = function(robot){
     //     robot.logger.debug('GET LINE MSG');
     //     res.send('GET MSG');
     // });
-    robot.respond(/line (.*)/i, function(res){
-        let keyword = res.match[1];
-        let envelope = {
-            replyToken: 'testing'
-        }
-        let msg = `GET: ${keyword}`;
-        console.log(msg);
-        // res.reply(envelope, msg);
-        res.reply(envelope, msg);
-    });
     // console.log(robot.listeners[0]);
     // robot.router.post('/', function(req, res){
     //     robot.logger.debug('GET LINE MSG');
