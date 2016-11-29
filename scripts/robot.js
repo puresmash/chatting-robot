@@ -22,8 +22,8 @@ module.exports = function(robot){
     });
     // Test on web
     // robot.router.get('/', function(req, res){
-    //     robot.logger.debug('GET LINE MSG');
-    //     res.send('GET MSG');
+    //     // robot.logger.debug('GET LINE MSG');
+    //     // res.send('GET MSG');
     // });
     // console.log(robot.listeners[0]);
     // robot.router.post('/', function(req, res){
@@ -100,25 +100,33 @@ function cheerioTest(user, keyword){
             // console.log($('div.g').length);
             const ele = $('div.g').first();
 
-            const result = existSpecialView(ele)? getWithoutDesc(ele) : getWithDesc(ele);
+            const result = existYoutubeView(ele)? getYoutubeView(ele) : getNormalView(ele);
             user.reply(result);
 
         }
     });
     // .pipe(fs.createWriteStream('debug.html'));
 }
-function existSpecialView(ele){
+// Youtube, Image, Normal
+function existYoutubeView(ele){
     return ele.find('h3._X8d a').length != 0
 }
-function getWithDesc(ele){
-    const linkEle = ele.find('h3.r a');
-    const linkText = linkEle.first().text();
+function getNormalView(ele){
+    let linkEle = ele.find('h3.r a');
     let temp = linkEle.attr('href');
-    const link = querystring.parse(temp)['/url?q'];
+    let link = querystring.parse(temp)['/url?q'];
+    // Skip Image Result
+    if(!link){
+        ele = ele.next();
+        linkEle = ele.find('h3.r a');
+        temp = linkEle.attr('href');
+        link = querystring.parse(temp)['/url?q'];
+    }
+    const linkText = linkEle.first().text();
     const desc = ele.find('span.st').text();
     return `${linkText}\n${link}\n${desc}`;
 }
-function getWithoutDesc(ele){
+function getYoutubeView(ele){
     const linkEle = ele.find('h3._X8d a');
     const linkText = linkEle.first().text();
     let temp = linkEle.attr('href');
