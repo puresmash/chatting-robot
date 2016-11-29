@@ -101,7 +101,7 @@ function cheerioTest(user, keyword){
             const ele = $('div.g').first();
 
             const result = existSpecialView(ele)? getWithoutDesc(ele) : getWithDesc(ele);
-            user.send(result);
+            user.reply(result);
 
         }
     });
