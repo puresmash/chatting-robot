@@ -24,6 +24,10 @@ module.exports = function(robot){
     robot.respond(/tina/i, function(res){
         res.reply('Happy Birthday~');
     });
+
+    robot.respond(/sj/i, function(res){
+        res.reply('Happy Birthday +1');
+    });
     // Test on web
     // robot.router.get('/', function(req, res){
     //     // robot.logger.debug('GET LINE MSG');
