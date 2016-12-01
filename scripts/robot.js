@@ -7,7 +7,9 @@ var querystring = require('querystring')
 var iconvlite = require('iconv-lite')
 var fs = require('fs')
 var util = require('util')
-var StickerResponse = require('../src/response.coffee').StickerResponse
+var LineResponse = require('../src/response.coffee')
+var SendSticker = LineResponse.SendSticker
+var SendLocation = LineResponse.SendLocation
 const LINE_TOKEN = process.env.HUBOT_LINE_TOKEN;
 
 module.exports = function(robot){
@@ -31,11 +33,33 @@ module.exports = function(robot){
         res.reply('Happy Birthday +1');
     });
 
-    robot.respond(/test/i, function(res){
-        robot.logger.debug(util.inspect(StickerResponse, false, null));
-        let stickerResponse = new StickerResponse('1', '1');
-        robot.logger.debug(util.inspect(stickerResponse, false, null));
-        res.emote(stickerResponse);
+    robot.respond(/sticker (.*)/i, function(res){
+        let keyword = res.match[1];
+        let sticker = new SendSticker(keyword, '1');
+
+        res.emote(sticker);
+    });
+
+    robot.respond(/location/i, function(res){
+        let location =
+            new SendLocation(
+                'ＬＩＮＥ株式会社',
+                '〒150-0002 東京都渋谷区渋谷２丁目２１−１',
+                35.65910807942215,
+                139.70372892916203
+            );
+
+        res.emote(location);
+    });
+
+    robot.respond(/test2/i, function(res){
+
+        let sticker1 = new SendSticker('1', '1');
+        let sticker2 = new SendSticker('2', '1');
+        let sticker3 = new SendSticker('3', '1');
+        // Test Multi
+        res.emote(sticker1, sticker2, sticker3);
+        // res.reply(sendSticker1, sendSticker2);
     });
     // Test on web
     // robot.router.get('/', function(req, res){

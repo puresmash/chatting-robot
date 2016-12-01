@@ -4,6 +4,7 @@ catch
   prequire = require('parent-require')
   {Robot,Adapter,TextMessage,User} = prequire 'hubot'
 
+{SendObject} = require './response'
 {EventEmitter} = require 'events'
 util = require 'util'
 crypto = require 'crypto'
@@ -51,11 +52,22 @@ class LineAdapter extends Adapter
         return reply
 
     _formatMsgObj: (msgObj) ->
-        return {
-            "type": msgObj.type,
-            "packageId": msgObj.packageId if msgObj.packageId?,
-            "stickerId": msgObj.stickerId if msgObj.stickerId?
-        }
+        if msgObj instanceof SendObject
+            return {
+                "type": msgObj.type,
+                "packageId": msgObj.packageId if msgObj.packageId?,
+                "stickerId": msgObj.stickerId if msgObj.stickerId?,
+                "title": msgObj.title if msgObj.title?,
+                "address": msgObj.address if msgObj.address?,
+                "latitude": msgObj.latitude if msgObj.latitude?,
+                "longitude": msgObj.longitude if msgObj.longitude?,
+            }
+        else if typeof msgObj is 'string'
+            return {
+                "type": "text",
+                "text": msgObj
+            }
+
 
     _formatTextObj: (token, msg) ->
         return {
