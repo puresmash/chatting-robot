@@ -33,7 +33,7 @@ module.exports = function(robot){
 
     robot.respond(/test/i, function(res){
         robot.logger.debug(util.inspect(StickerResponse, false, null));
-        let stickerResponse = new StickerResponse(1, 1);
+        let stickerResponse = new StickerResponse('1', '1');
         robot.logger.debug(util.inspect(stickerResponse, false, null));
         res.emote(stickerResponse);
     });
