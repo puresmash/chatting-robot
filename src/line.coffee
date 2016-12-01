@@ -23,14 +23,12 @@ class LineAdapter extends Adapter
 
     emote: (envelope, msgObjs...) ->
         replyToken = envelope.message.replyToken
-        replyAry = []
-        replyAry.push @_formatReplyObj replyToken, msgObj for msgObj in msgObjs
-        @robot.logger.debug JSON.stringify(replyAry)
-        @_sendReply replyObj for replyObj in replyAry
+        replyObj =  @_formatReplyObj replyToken, msgObjs
+        @_sendReply replyObj
 
-    _sendReply: (token, replyObj) ->
+    _sendReply: (replyObj) ->
         logger = @robot.logger
-
+        logger.debug JSON.stringify(replyObj)
         @robot.http(@REPLY_URL)
             .header('Content-Type', 'application/json')
             .header('Authorization', "Bearer #{@LINE_TOKEN}")
@@ -44,16 +42,19 @@ class LineAdapter extends Adapter
                     logger.debug "Error with statusCode: #{res.statusCode}"
                     logger.debug "Body: #{body}"
 
-    _formatReplyObj: (token, msgObj) ->
-        return {
+    _formatReplyObj: (token, msgAry) ->
+        reply =  {
             "replyToken": token,
-            "messages":[
-                {
-                    "type": msgObj.type,
-                    "packageId": msgObj.packageId if msgObj.packageId?,
-                    "stickerId": msgObj.stickerId if msgObj.stickerId?
-                }
-            ]
+            "messages":[]
+        }
+        reply.messages.push @_formatMsgObj msgObj for msgObj in msgAry
+        return reply
+
+    _formatMsgObj: (msgObj) ->
+        return {
+            "type": msgObj.type,
+            "packageId": msgObj.packageId if msgObj.packageId?,
+            "stickerId": msgObj.stickerId if msgObj.stickerId?
         }
 
     _formatTextObj: (token, msg) ->
