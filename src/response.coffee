@@ -13,6 +13,6 @@ class StickerResponse
         # super @robot, @message, @match
         @type = 'sticker'
 
-exports.exports = {
+module.exports = {
     StickerResponse
 }

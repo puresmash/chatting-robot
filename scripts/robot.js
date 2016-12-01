@@ -7,7 +7,7 @@ var querystring = require('querystring')
 var iconvlite = require('iconv-lite')
 var fs = require('fs')
 var util = require('util')
-var StickerResponse = require('./response')
+var StickerResponse = require('../src/response.coffee').StickerResponse
 const LINE_TOKEN = process.env.HUBOT_LINE_TOKEN;
 
 module.exports = function(robot){
@@ -32,7 +32,9 @@ module.exports = function(robot){
     });
 
     robot.respond(/test/i, function(res){
+        robot.logger.debug(util.inspect(StickerResponse, false, null));
         let stickerResponse = new StickerResponse(1, 1);
+        robot.logger.debug(util.inspect(stickerResponse, false, null));
         res.emote(stickerResponse);
     });
     // Test on web

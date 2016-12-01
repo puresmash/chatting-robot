@@ -25,6 +25,7 @@ class LineAdapter extends Adapter
         replyToken = envelope.message.replyToken
         replyAry = []
         replyAry.push @_formatReplyObj replyToken, msgObj for msgObj in msgObjs
+        @robot.logger.debug JSON.stringify(replyAry)
         @_sendReply replyObj for replyObj in replyAry
 
     _sendReply: (token, replyObj) ->
