@@ -16,11 +16,10 @@ class LineAdapter extends Adapter
         @REPLY_URL = 'https://api.line.me/v2/bot/message/reply'
         @LINE_TOKEN = process.env.HUBOT_LINE_TOKEN
 
-    reply: (envelope, strings...) ->
+    reply: (envelope, msgObjs...) ->
         replyToken = envelope.message.replyToken
-        replyAry = []
-        replyAry.push @_formatTextObj replyToken, msg for msg in strings
-        @_sendReply replyObj for replyObj in replyAry
+        replyObj =  @_formatReplyObj replyToken, msgObjs
+        @_sendReply replyObj
 
     emote: (envelope, msgObjs...) ->
         replyToken = envelope.message.replyToken
@@ -52,21 +51,15 @@ class LineAdapter extends Adapter
         return reply
 
     _formatMsgObj: (msgObj) ->
-        @robot.logger.debug 'msgObj'
-        @robot.logger.debug util.inspect msgObj, true, null
-        @robot.logger.debug 'msgObj type 2'
-        @robot.logger.debug msgObj
-        @robot.logger.debug 'SendObject'
-        @robot.logger.debug util.inspect SendObject, true, null
-        @robot.logger.debug 'SendSticker'
-        @robot.logger.debug util.inspect SendSticker, true, null
+        # @robot.logger.debug 'msgObj'
+        # @robot.logger.debug util.inspect msgObj, true, null
+        # @robot.logger.debug 'typeof msgObj'
         # @robot.logger.debug typeof msgObj
-        @robot.logger.debug 'msgObj instanceof SendObject'
-        @robot.logger.debug msgObj instanceof SendObject
-        @robot.logger.debug 'msgObj instanceof SendSticker'
-        @robot.logger.debug msgObj instanceof SendSticker
-        # @robot.logger.debug SendObject instanceof SendObjectΩ
-        if msgObj instanceof SendObject
+        # @robot.logger.debug 'msgObj instanceof SendObject'
+        # @robot.logger.debug msgObj instanceof SendObject
+        # @robot.logger.debug 'msgObj instanceof SendSticker'
+        # @robot.logger.debug msgObj instanceof SendSticker
+        if msgObj and msgObj.type
             return {
                 "type": msgObj.type,
                 "packageId": msgObj.packageId if msgObj.packageId?,
@@ -83,16 +76,16 @@ class LineAdapter extends Adapter
             }
 
 
-    _formatTextObj: (token, msg) ->
-        return {
-            "replyToken": token,
-            "messages":[
-                {
-                    "type": "text",
-                    "text": msg
-                }
-            ]
-        }
+    # _formatTextObj: (token, msg) ->
+    #     return {
+    #         "replyToken": token,
+    #         "messages":[
+    #             {
+    #                 "type": "text",
+    #                 "text": msg
+    #             }
+    #         ]
+    #     }
 
     run: ->
         self = @
