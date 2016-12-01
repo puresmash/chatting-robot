@@ -9,22 +9,31 @@ util = require 'util'
 crypto = require 'crypto'
 
 class LineAdapter extends Adapter
-    constructor: ->
-        super
+    constructor: (@robot) ->
+        super @robot
 
         @REPLY_URL = 'https://api.line.me/v2/bot/message/reply'
         @LINE_TOKEN = process.env.HUBOT_LINE_TOKEN
 
     reply: (envelope, strings...) ->
-        @_sendText envelope.message.replyToken, msg for msg in strings
+        replyToken = envelope.message.replyToken
+        replyAry = []
+        replyAry.push @_formatTextObj replyToken, msg for msg in strings
+        @_sendReply replyObj for replyObj in replyAry
 
-    _sendText: (token, msg) ->
+    emote: (envelope, msgObjs...) ->
+        replyToken = envelope.message.replyToken
+        replyAry = []
+        replyAry.push @_formatReplyObj replyToken, msgObj for msgObj in msgObjs
+        @_sendReply replyObj for replyObj in replyAry
+
+    _sendReply: (token, replyObj) ->
         logger = @robot.logger
 
         @robot.http(@REPLY_URL)
             .header('Content-Type', 'application/json')
             .header('Authorization', "Bearer #{@LINE_TOKEN}")
-            .post(JSON.stringify(@_formatReplyObj token, msg)) (err, res, body) ->
+            .post(JSON.stringify(replyObj)) (err, res, body) ->
                 if err
                     logger.error "Error sending msg: #{err}"
                     return
@@ -34,8 +43,19 @@ class LineAdapter extends Adapter
                     logger.debug "Error with statusCode: #{res.statusCode}"
                     logger.debug "Body: #{body}"
 
+    _formatReplyObj: (token, msgObj) ->
+        return {
+            "replyToken": token,
+            "messages":[
+                {
+                    "type": msgObj.type,
+                    "packageId": msgObj.packageId if msgObj.packageId?,
+                    "stickerId": msgObj.stickerId if msgObj.stickerId?
+                }
+            ]
+        }
 
-    _formatReplyObj: (token, msg) ->
+    _formatTextObj: (token, msg) ->
         return {
             "replyToken": token,
             "messages":[

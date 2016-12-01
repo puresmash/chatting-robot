@@ -7,9 +7,11 @@ var querystring = require('querystring')
 var iconvlite = require('iconv-lite')
 var fs = require('fs')
 var util = require('util')
+var StickerResponse = require('./response')
 const LINE_TOKEN = process.env.HUBOT_LINE_TOKEN;
 
 module.exports = function(robot){
+
     robot.respond(/hello/i, function(res){
         console.log('world');
         res.reply('world');
@@ -27,6 +29,11 @@ module.exports = function(robot){
 
     robot.respond(/sj/i, function(res){
         res.reply('Happy Birthday +1');
+    });
+
+    robot.respond(/test/i, function(res){
+        let stickerResponse = new StickerResponse(1, 1);
+        res.emote(stickerResponse);
     });
     // Test on web
     // robot.router.get('/', function(req, res){
