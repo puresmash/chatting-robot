@@ -16,11 +16,17 @@ class LineAdapter extends Adapter
         @REPLY_URL = 'https://api.line.me/v2/bot/message/reply'
         @LINE_TOKEN = process.env.HUBOT_LINE_TOKEN
 
+    # Use send when you need to PUSH message
+    send: (envelope, msgObjs...)->
+        @robot.logger.debug 'Send will be provided in future version'
+
+    # Use reply when you need to REPLY message
     reply: (envelope, msgObjs...) ->
         replyToken = envelope.message.replyToken
         replyObj =  @_formatReplyObj replyToken, msgObjs
         @_sendReply replyObj
 
+    # Use reply when you need to REPLY message
     emote: (envelope, msgObjs...) ->
         replyToken = envelope.message.replyToken
         replyObj =  @_formatReplyObj replyToken, msgObjs
@@ -28,11 +34,11 @@ class LineAdapter extends Adapter
 
     _sendReply: (replyObj) ->
         logger = @robot.logger
-        logger.debug JSON.stringify(replyObj)
+        json = JSON.stringify(replyObj)
         @robot.http(@REPLY_URL)
             .header('Content-Type', 'application/json')
             .header('Authorization', "Bearer #{@LINE_TOKEN}")
-            .post(JSON.stringify(replyObj)) (err, res, body) ->
+            .post(json) (err, res, body) ->
                 if err
                     logger.error "Error sending msg: #{err}"
                     return
@@ -68,6 +74,10 @@ class LineAdapter extends Adapter
                 "address": msgObj.address if msgObj.address?,
                 "latitude": msgObj.latitude if msgObj.latitude?,
                 "longitude": msgObj.longitude if msgObj.longitude?,
+                "originalContentUrl": msgObj.originalContentUrl if msgObj.originalContentUrl?,
+                "previewImageUrl": msgObj.previewImageUrl if msgObj.previewImageUrl?,
+                "duration": msgObj.duration if msgObj.duration?,
+                "text": msgObj.text if msgObj.text?,
             }
         else if typeof msgObj is 'string'
             return {
