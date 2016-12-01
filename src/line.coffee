@@ -4,7 +4,7 @@ catch
   prequire = require('parent-require')
   {Robot,Adapter,TextMessage,User} = prequire 'hubot'
 
-{SendObject} = require './response'
+{SendObject, SendSticker} = require './response'
 {EventEmitter} = require 'events'
 util = require 'util'
 crypto = require 'crypto'
@@ -52,6 +52,20 @@ class LineAdapter extends Adapter
         return reply
 
     _formatMsgObj: (msgObj) ->
+        @robot.logger.debug 'msgObj'
+        @robot.logger.debug util.inspect msgObj, true, null
+        @robot.logger.debug 'msgObj type 2'
+        @robot.logger.debug msgObj
+        @robot.logger.debug 'SendObject'
+        @robot.logger.debug util.inspect SendObject, true, null
+        @robot.logger.debug 'SendSticker'
+        @robot.logger.debug util.inspect SendSticker, true, null
+        # @robot.logger.debug typeof msgObj
+        @robot.logger.debug 'msgObj instanceof SendObject'
+        @robot.logger.debug msgObj instanceof SendObject
+        @robot.logger.debug 'msgObj instanceof SendSticker'
+        @robot.logger.debug msgObj instanceof SendSticker
+        # @robot.logger.debug SendObject instanceof SendObjectΩ
         if msgObj instanceof SendObject
             return {
                 "type": msgObj.type,

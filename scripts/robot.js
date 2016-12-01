@@ -36,7 +36,7 @@ module.exports = function(robot){
     robot.respond(/sticker (.*)/i, function(res){
         let keyword = res.match[1];
         let sticker = new SendSticker(keyword, '1');
-
+        robot.logger.debug(sticker instanceof SendSticker)
         res.emote(sticker);
     });
 
