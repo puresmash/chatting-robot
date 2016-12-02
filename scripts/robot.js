@@ -36,14 +36,15 @@ module.exports = function(robot){
     robot.respond(/sticker (.*)/i, function(res){
         let keyword = res.match[1];
         let sticker = new SendSticker(keyword, '1');
-        robot.logger.debug(sticker instanceof SendSticker)
+        robot.logger.debug (sticker instanceof SendSticker)
         res.emote(sticker);
     });
 
     robot.respond(/location/i, function(res){
+        // ＬＩＮＥ株式会社
         let location =
             new SendLocation(
-                'ＬＩＮＥ株式会社',
+                'ＬＩＮＥ',
                 '〒150-0002 東京都渋谷区渋谷２丁目２１−１',
                 35.65910807942215,
                 139.70372892916203
