@@ -10,6 +10,11 @@ var util = require('util')
 var LineResponse = require('../src/response.coffee')
 var SendSticker = LineResponse.SendSticker
 var SendLocation = LineResponse.SendLocation
+var SendImage = LineResponse.SendImage
+var SendVideo = LineResponse.SendVideo
+var SendText = LineResponse.SendText
+var SendAudio = LineResponse.SendAudios
+
 const LINE_TOKEN = process.env.HUBOT_LINE_TOKEN;
 
 module.exports = function(robot){
@@ -49,8 +54,39 @@ module.exports = function(robot){
                 35.65910807942215,
                 139.70372892916203
             );
-
         res.emote(location);
+    });
+
+    robot.respond(/text/i, function(res){
+        let text = new SendText('This is a text')
+        let text2 = new SendText('Second Line')
+        let text3 = new SendText('Third Line')
+        res.reply(text, text2, text3);
+    });
+
+    robot.respond(/text2/i, function(res){
+        let text = 'This is a text'
+        let text2 = 'Second Line'
+        let text3 = 'Third Line'
+        res.reply(text, text2, text3);
+    });
+
+    robot.respond(/testimage (.*) (.*)/i, function(res){
+        let originalContentUrl = res.match[1];
+        let previewImageUrl = res.match[2];
+        res.reply(new SendImage(originalContentUrl, previewImageUrl));
+    });
+
+    robot.respond(/video (.*) (.*)/i, function(res){
+        let originalContentUrl = res.match[1];
+        let previewImageUrl = res.match[2];
+        res.reply(new SendVideo(originalContentUrl, previewImageUrl));
+    });
+
+    robot.respond(/audio (.*) (.*)/i, function(res){
+        let originalContentUrl = res.match[1];
+        let duration = res.match[2];
+        res.reply(new SendAudio(originalContentUrl, previewImageUrl));
     });
 
     robot.respond(/test2/i, function(res){
