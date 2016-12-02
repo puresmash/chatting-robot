@@ -78,7 +78,7 @@ module.exports = function(robot){
     robot.respond(/testimage (.*)/i, function(res){
         let originalContentUrl = res.match[1];
         // let previewImageUrl = res.match[2];
-        res.reply(new SendImage(originalContentUrl, 'http://placehold.it/250'));
+        res.reply(new SendImage(originalContentUrl, 'https://placehold.it/250'));
     });
 
     robot.respond(/video (.*) (.*)/i, function(res){
