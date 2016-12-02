@@ -40,7 +40,7 @@ module.exports = function(robot){
 
     robot.respond(/sticker (.*)/i, function(res){
         let keyword = res.match[1];
-        const customize = ['9381511', '8027272', '8121073', '34', '100', '2637', '2634', '8109573'];
+        const customize = ['34', '8027272', '8121073', '9381511', '2637', '2634', '8109573'];
         if(keyword === '520'){
             keyword = res.random(customize);
         }
@@ -75,10 +75,10 @@ module.exports = function(robot){
         res.reply(text, text2, text3);
     });
 
-    robot.respond(/testimage (.*) (.*)/i, function(res){
+    robot.respond(/testimage (.*)/i, function(res){
         let originalContentUrl = res.match[1];
-        let previewImageUrl = res.match[2];
-        res.reply(new SendImage(originalContentUrl, previewImageUrl));
+        // let previewImageUrl = res.match[2];
+        res.reply(new SendImage(originalContentUrl, 'http://placehold.it/250'));
     });
 
     robot.respond(/video (.*) (.*)/i, function(res){
