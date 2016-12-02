@@ -40,7 +40,7 @@ module.exports = function(robot){
 
     robot.respond(/sticker (.*)/i, function(res){
         let keyword = res.match[1];
-        customize = ['9381511', '8027272', '8121073', '34', '100', '2637', '2634', '8109573'];
+        const customize = ['9381511', '8027272', '8121073', '34', '100', '2637', '2634', '8109573'];
         if(keyword === '520'){
             keyword = res.random(customize);
         }
