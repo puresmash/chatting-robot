@@ -1,10 +1,16 @@
 
 LineAdapter = require './src/line'
-Response    = require './src/response'
+{SendObject, SendText, SendImage, SendVideo, SendAudio, SendLocation, SendSticker} = require './src/response'
 
 module.exports = {
   LineAdapter
-  Response
+  SendObject
+  SendText
+  SendImage
+  SendVideo
+  SendAudio
+  SendLocation
+  SendSticker
 }
 
 exports.use = (robot) ->
