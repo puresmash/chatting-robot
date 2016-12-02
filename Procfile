@@ -1,1 +1,1 @@
-web: bin/hubot -a myhubot
+web: bin/hubot -a line-messaging
