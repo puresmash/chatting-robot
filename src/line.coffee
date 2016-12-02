@@ -65,8 +65,8 @@ class LineAdapter extends Adapter
         # @robot.logger.debug msgObj instanceof SendObject
         # @robot.logger.debug 'msgObj instanceof SendSticker'
         # @robot.logger.debug msgObj instanceof SendSticker
-        @robot.logger.debug 'msgObj.prototype instanceof SendSticker'
-        @robot.logger.debug msgObj.prototype instanceof SendSticker
+        # @robot.logger.debug 'msgObj.prototype instanceof SendSticker'
+        # @robot.logger.debug msgObj.prototype instanceof SendSticker
         if msgObj and msgObj.type
             return {
                 "type": msgObj.type,
@@ -195,5 +195,4 @@ class LineStreaming extends EventEmitter
             .update(JSON.stringify(content), 'utf8')
             .digest('base64')
 
-exports.use = (robot) ->
-    new LineAdapter robot
+module.exports = LineAdapter

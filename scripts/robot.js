@@ -77,7 +77,7 @@ module.exports = function(robot){
 
     robot.respond(/testimage (.*)/i, function(res){
         let originalContentUrl = res.match[1];
-        let previewImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=23&txt=250%C3%97250&w=250&h=250';
+        let previewImageUrl = 'https://placeholdit.imgix.net/~text?txtsize=23&txt=240%C3%97240&w=240&h=240';
         res.reply(new SendImage(originalContentUrl, previewImageUrl));
     });
 
