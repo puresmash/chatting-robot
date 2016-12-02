@@ -2,7 +2,7 @@
 LineAdapter = require './src/line'
 {SendObject, SendText, SendImage, SendVideo, SendAudio, SendLocation, SendSticker} = require './src/response'
 
-module.exports = {
+module.exports = exports = {
   LineAdapter
   SendObject
   SendText
