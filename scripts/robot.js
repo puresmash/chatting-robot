@@ -7,13 +7,13 @@ var querystring = require('querystring')
 var iconvlite = require('iconv-lite')
 var fs = require('fs')
 var util = require('util')
-var LineResponse = require('../src/response.coffee')
-var SendSticker = LineResponse.SendSticker
-var SendLocation = LineResponse.SendLocation
-var SendImage = LineResponse.SendImage
-var SendVideo = LineResponse.SendVideo
-var SendText = LineResponse.SendText
-var SendAudio = LineResponse.SendAudios
+var LineMessaging = require('../index.coffee')
+var SendSticker = LineMessaging.SendSticker
+var SendLocation = LineMessaging.SendLocation
+var SendImage = LineMessaging.SendImage
+var SendVideo = LineMessaging.SendVideo
+var SendText = LineMessaging.SendText
+var SendAudio = LineMessaging.SendAudios
 
 const LINE_TOKEN = process.env.HUBOT_LINE_TOKEN;
 
