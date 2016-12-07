@@ -15,6 +15,7 @@ var SendImage = LineMessaging.SendImage
 var SendVideo = LineMessaging.SendVideo
 var SendText = LineMessaging.SendText
 var SendAudio = LineMessaging.SendAudio
+var StickerMessage = LineMessaging.StickerMessage
 
 const LINE_TOKEN = process.env.HUBOT_LINE_TOKEN;
 
@@ -23,6 +24,24 @@ module.exports = function(robot){
     robot.respond(/hello/i, function(res){
         console.log('world');
         res.reply('world');
+    });
+
+    // Echo a Sticker msg
+    var matcher = function(message){
+        // Not implement listenrt, so should CatchAllMessage.message
+        var stickerMsg = message.message;
+        if (stickerMsg && stickerMsg instanceof StickerMessage){
+            if(stickerMsg.stickerId === '1'){
+                return true
+            }
+        }
+        return false;
+    }
+    robot.listen(matcher, function(res){
+        var stickerMessage = res.message.message;
+        res.envelope.message = stickerMessage;
+        var sticker = new SendSticker(stickerMessage.stickerId, stickerMessage.packageId);
+        res.reply(sticker);
     });
 
     robot.respond(/google (.*)/i, function(res){
