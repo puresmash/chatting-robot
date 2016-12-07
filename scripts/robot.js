@@ -30,8 +30,9 @@ module.exports = function(robot){
     var matcher = function(message){
         // Not implement listenrt, so should CatchAllMessage.message
         var stickerMsg = message.message;
-        if (stickerMsg && stickerMsg instanceof StickerMessage){
+        if (stickerMsg && stickerMsg.type && stickerMsg.type === 'sticker'){
             if(stickerMsg.stickerId === '1'){
+                robot.logger.debug(stickerMsg);
                 return true
             }
         }
