@@ -128,7 +128,7 @@ module.exports = function(robot){
     // Template Message
     robot.respond(/template/i, (res) => {
         let msg = BuildTemplateMessage
-        .init('this is altText')
+        .init('this is a template msg')
         .buttons({
             thumbnailImageUrl: 'https://github.com/puresmash/chatting-robot/blob/develope/docs/template.jpg?raw=true',
             title: 'Template Message',
@@ -146,6 +146,31 @@ module.exports = function(robot){
         res.reply(msg);
     });
 
+    // Template Message
+    robot.respond(/carousel/i, (res) => {
+        let msg = BuildTemplateMessage
+        .init('this is a carousel msg')
+        .carousel({
+            thumbnailImageUrl: 'https://github.com/puresmash/chatting-robot/blob/develope/docs/template.jpg?raw=true',
+            title: 'Carousel Message 1',
+            text: 'text1'
+        })
+            .action('uri', {
+                label: 'Open Google',
+                uri: 'https://www.google.com.tw/'
+            })
+        .carousel({
+            thumbnailImageUrl: 'https://github.com/puresmash/chatting-robot/blob/develope/docs/carousel.jpg?raw=true',
+            title: 'Carousel Message 2',
+            text: 'text2'
+        })
+            .action('uri', {
+                label: 'Adapter Link',
+                uri: 'https://github.com/puresmash/hubot-line-messaging'
+            })
+        .build();
+        res.reply(msg);
+    });
 
     // Test on web
     // robot.router.get('/', function(req, res){
