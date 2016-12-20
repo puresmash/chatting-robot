@@ -130,7 +130,7 @@ module.exports = function(robot){
         let msg = BuildTemplateMessage
         .init('this is altText')
         .buttons({
-            thumbnailImageUrl: 'https://github.com/puresmash/chatting-robot/tree/develope/docs/template.jpg',
+            thumbnailImageUrl: 'https://github.com/puresmash/chatting-robot/blob/develope/docs/template.jpg?raw=true',
             title: 'Template Message',
             text: 'Let me google for you'
         })
