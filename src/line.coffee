@@ -97,10 +97,10 @@ class LineAdapter extends Adapter
         obj = {
             type: template.type
         }
-        obj.thumbnailImageUrl = msgObj.thumbnailImageUrl if msgObj.thumbnailImageUrl?
-        obj.title = msgObj.title if msgObj.title?
-        obj.text = msgObj.text if msgObj.text?
-        obj.actions = @getActions(msgObj.actions) if msgObj.actions?
+        obj.thumbnailImageUrl = template.thumbnailImageUrl if msgObj.thumbnailImageUrl?
+        obj.title = template.title if template.title?
+        obj.text = template.text if template.text?
+        obj.actions = @getActions(template.actions) if template.actions?
         return obj
 
     getActions: (actionAry) ->
