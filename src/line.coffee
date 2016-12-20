@@ -97,7 +97,7 @@ class LineAdapter extends Adapter
         obj = {
             type: template.type
         }
-        obj.thumbnailImageUrl = template.thumbnailImageUrl if msgObj.thumbnailImageUrl?
+        obj.thumbnailImageUrl = template.thumbnailImageUrl if template.thumbnailImageUrl?
         obj.title = template.title if template.title?
         obj.text = template.text if template.text?
         obj.actions = @getActions(template.actions) if template.actions?
