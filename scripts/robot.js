@@ -123,6 +123,21 @@ module.exports = function(robot){
         res.emote(sticker1, sticker2, sticker3);
         // res.reply(sendSticker1, sendSticker2);
     });
+
+    // Template Message
+    robot.respond(/template/i, () => {
+        let msg = BuildTemplateMessage
+        .init('this is altText')
+        .buttons({
+            thumbnailImageUrl: 'https://github.com/puresmash/chatting-robot/tree/develope/docs/template.jpg',
+            title: 'test title',
+            text: 'test text'
+        })
+        .build();
+        res.reply(msg);
+    });
+
+
     // Test on web
     // robot.router.get('/', function(req, res){
     //     // robot.logger.debug('GET LINE MSG');
