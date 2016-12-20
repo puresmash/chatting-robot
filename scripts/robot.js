@@ -126,7 +126,7 @@ module.exports = function(robot){
     });
 
     // Template Message
-    robot.respond(/template/i, () => {
+    robot.respond(/template/i, (res) => {
         let msg = BuildTemplateMessage
         .init('this is altText')
         .buttons({
