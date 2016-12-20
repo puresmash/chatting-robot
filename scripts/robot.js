@@ -131,8 +131,12 @@ module.exports = function(robot){
         .init('this is altText')
         .buttons({
             thumbnailImageUrl: 'https://github.com/puresmash/chatting-robot/tree/develope/docs/template.jpg',
-            title: 'test title',
-            text: 'test text'
+            title: 'Template Message',
+            text: 'Let me google for you'
+        })
+        .action('uri', {
+            label: 'Open Google',
+            uri: 'https://www.google.com.tw/'
         })
         .build();
         res.reply(msg);
