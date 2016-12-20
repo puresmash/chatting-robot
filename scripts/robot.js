@@ -16,6 +16,7 @@ var SendVideo = LineMessaging.SendVideo
 var SendText = LineMessaging.SendText
 var SendAudio = LineMessaging.SendAudio
 var StickerMessage = LineMessaging.StickerMessage
+const BuildTemplateMessage = LineMessaging.BuildTemplateMessage;
 
 const LINE_TOKEN = process.env.HUBOT_LINE_TOKEN;
 
