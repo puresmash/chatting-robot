@@ -113,10 +113,10 @@ class LineAdapter extends Adapter
         obj = {
             type: action.type
         }
-        obj.label = msgObj.label if msgObj.label?
-        obj.data = msgObj.data if msgObj.data?
-        obj.text = msgObj.text if msgObj.text?
-        obj.uri = msgObj.uri if msgObj.uri?
+        obj.label = action.label if action.label?
+        obj.data = action.data if action.data?
+        obj.text = action.text if action.text?
+        obj.uri = action.uri if action.uri?
         return obj
 
     run: ->
