@@ -138,6 +138,10 @@ module.exports = function(robot){
             label: 'Open Google',
             uri: 'https://www.google.com.tw/'
         })
+        .action('uri', {
+            label: 'Adapter Link',
+            uri: 'https://github.com/puresmash/hubot-line-messaging'
+        })
         .build();
         res.reply(msg);
     });
