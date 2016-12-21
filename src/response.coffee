@@ -103,8 +103,8 @@ class BuildTemplateMessage
 
     _addAction: (obj)->
         if (@options.templateObj.type isnt 'carousel')
-            @options.actions = [] if !@options.actions
-            @options.actions.push obj
+            @options.templateObj.actions = [] if !@options.templateObj.actions
+            @options.templateObj.actions.push obj
         else
             column = lodash.last(@options.templateObj.columns);
             column.actions = [] if !column.actions
