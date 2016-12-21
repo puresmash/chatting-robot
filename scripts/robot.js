@@ -175,32 +175,19 @@ module.exports = function(robot){
     // Template Message
     robot.respond(/confirm/i, (res) => {
         let msg = BuildTemplateMessage
-        .init('this is a confirm template')
+        .init('this is a confirm msg')
         .confirm({
-            "text": "Are you sure?"
+            text: 'confirm?'
+        })
+        .action('uri', {
+            label: 'OK',
+            uri: 'https://www.google.com.tw/search?q=ok'
         })
         .action('message', {
-            "label": "Yes",
-            "text": "yes"
-        })
-        .action('message', {
-            "label": "No",
-            "text": "no"
+            label: 'Cancel',
+            text: 'cancel request'
         })
         .build();
-        // .init('this is a confirm msg')
-        // .confirm({
-        //     text: 'confirm?'
-        // })
-        // .action('uri', {
-        //     label: 'OK',
-        //     uri: 'https://www.google.com.tw/search?q=ok'
-        // })
-        // .action('message', {
-        //     label: 'Cancel',
-        //     text: 'cancel request'
-        // })
-        // .build();
         res.reply(msg);
     });
 
