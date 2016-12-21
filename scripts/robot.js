@@ -185,7 +185,7 @@ module.exports = function(robot){
         })
         .action('message', {
             label: 'Cancel',
-            uri: 'https://www.google.com.tw/search?q=cancel'
+            text: 'cancel request'
         })
         .build();
         res.reply(msg);
