@@ -172,6 +172,25 @@ module.exports = function(robot){
         res.reply(msg);
     });
 
+    // Template Message
+    robot.respond(/confirm/i, (res) => {
+        let msg = BuildTemplateMessage
+        .init('this is a confirm msg')
+        .confirm({
+            text: 'confirm?'
+        })
+        .action('uri', {
+            label: 'OK',
+            uri: 'https://www.google.com.tw/search?q=ok'
+        })
+        .action('message', {
+            label: 'Cancel',
+            uri: 'https://www.google.com.tw/search?q=cancel'
+        })
+        .build();
+        res.reply(msg);
+    });
+
     // Test on web
     // robot.router.get('/', function(req, res){
     //     // robot.logger.debug('GET LINE MSG');
