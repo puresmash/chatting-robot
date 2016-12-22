@@ -154,16 +154,24 @@ module.exports = function(robot){
             .carousel({
                 thumbnailImageUrl: 'https://github.com/puresmash/chatting-robot/blob/develope/docs/template.jpg?raw=true',
                 title: 'Carousel Message 1',
-                text: 'text1'
+                text: 'Let me google for you'
             })
             .action('uri', {
-                label: 'Open Google',
+                label: 'Google it',
                 uri: 'https://www.google.com.tw/'
+            })
+            .action('uri', {
+                label: 'Adapter Link',
+                uri: 'https://github.com/puresmash/hubot-line-messaging'
             })
             .carousel({
                 thumbnailImageUrl: 'https://github.com/puresmash/chatting-robot/blob/develope/docs/carousel.jpg?raw=true',
                 title: 'Carousel Message 2',
-                text: 'text2'
+                text: 'Let me google for you'
+            })
+            .action('uri', {
+                label: 'Google it',
+                uri: 'https://www.google.com.tw/'
             })
             .action('uri', {
                 label: 'Adapter Link',
