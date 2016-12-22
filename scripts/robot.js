@@ -182,19 +182,21 @@ module.exports = function(robot){
     });
 
     // Template Message
-    robot.respond(/confirm/i, (res) => {
+    robot.respond(/confirm (.*)/i, (res) => {
+        let keyword = res.match[1];
+
         let msg = BuildTemplateMessage
             .init('this is a confirm msg')
             .confirm({
-                text: 'confirm?'
+                text: `確定要${keyword}的舉手?`
             })
-            .action('uri', {
+            .action('message', {
                 label: 'OK',
-                uri: 'https://www.google.com.tw/search?q=ok'
+                text: `我要${keyword}`
             })
             .action('message', {
                 label: 'Cancel',
-                text: 'cancel request'
+                text: `我不要${keyword}`
             })
             .build();
         res.reply(msg);
