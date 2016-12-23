@@ -33,7 +33,7 @@
     "coffee-script": ">=1.2.0"
   },
   "engines": {
-    "node": "5.9.1"
+    "node": ">=6.0"
   },
   "license": "MIT"
 }
