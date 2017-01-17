@@ -130,41 +130,41 @@ class LineAdapter extends Adapter
         bot = new LineStreaming(options, @robot)
         @streaming = bot
         bot.on 'text',
-            (sourceId, replyToken, msgObj) ->
-                user = @robot.brain.userForId sourceId
+            (source, replyToken, msgObj) ->
+                user = @robot.brain.userForId(source.sourceId, source.user)
                 # console.log util.inspect replyToken, false, null
                 message = new TextMessage(user, msgObj.text, msgObj.id)
                 message.replyToken = replyToken
                 self.receive message
 
         bot.on 'image',
-            (sourceId, replyToken, msgObj) ->
-                user = @robot.brain.userForId sourceId
+            (source, replyToken, msgObj) ->
+                user = @robot.brain.userForId(source.sourceId, source.user)
                 message = new ImageMessage(user, msgObj.id, replyToken)
                 self.receive message
 
         bot.on 'video',
-            (sourceId, replyToken, msgObj) ->
-                user = @robot.brain.userForId sourceId
+            (source, replyToken, msgObj) ->
+                user = @robot.brain.userForId(source.sourceId, source.user)
                 message = new VideoMessage(user, msgObj.id, replyToken)
                 self.receive message
 
         bot.on 'audio',
-            (sourceId, replyToken, msgObj) ->
-                user = @robot.brain.userForId sourceId
+            (source, replyToken, msgObj) ->
+                user = @robot.brain.userForId(source.sourceId, source.user)
                 message = new AudioMessage(user, msgObj.id, replyToken)
                 self.receive message
 
         bot.on 'location',
-            (sourceId, replyToken, msgObj) ->
-                user = @robot.brain.userForId sourceId
+            (source, replyToken, msgObj) ->
+                user = @robot.brain.userForId(source.sourceId, source.user)
                 message = new LocationMessage(user, msgObj.title, msgObj.address,
                                 msgObj.latitude, msgObj.longitude, msgObj.id, replyToken)
                 self.receive message
 
         bot.on 'sticker',
-            (sourceId, replyToken, msgObj) ->
-                user = @robot.brain.userForId sourceId
+            (source, replyToken, msgObj) ->
+                user = @robot.brain.userForId(source.sourceId, source.user)
                 message = new StickerMessage(user, msgObj.packageId, msgObj.stickerId, msgObj.id, replyToken)
                 self.receive message
 
@@ -176,6 +176,8 @@ class LineStreaming extends EventEmitter
         # router listen path: '/'
         @PATH = options.path
         @CHANNEL_SECRET = process.env.LINE_CHANNEL_SECRET
+        @LINE_TOKEN = process.env.HUBOT_LINE_TOKEN
+        @PROFILE_URL = 'https://api.line.me/v2/bot/profile/'
         # @REPLY_URL = 'https://api.line.me/v2/bot/message/reply'
         # @LINE_TOKEN = process.env.HUBOT_LINE_TOKEN
 
@@ -198,19 +200,6 @@ class LineStreaming extends EventEmitter
 
             # Event
             event = @getEvent req.body.events[0]
-            # event = req.body.events[0];
-            # replyToken = event.replyToken;
-            # eventType = event.type;
-
-            # Message
-            # message = @getMessage event
-            # text = message.text
-            # id = message.id
-            # @robot.logger.debug "text: #{event.message.text}"
-
-            # Source
-            source = @getSource event
-            sourceId = source.userId or source.roomId or source.groupId
 
             # Validate signature
             headerSignature = req.headers['x-line-signature'];
@@ -222,25 +211,56 @@ class LineStreaming extends EventEmitter
                 res.send 'Auth Failed'
                 return;
 
+            # Source
+            source = @getSource event
+            sourceId = source.userId or source.roomId or source.groupId
+            sourceType = source.sourceType
+            if sourceType is 'user'
+              @getProfile(sourceId).then(() ->
+                @emit message.type, source, replyToken, message
+                return;
+              ).catch(() ->
+                res.statusCode = 404
+                res.send 'Failed get user profile'
+                return;
+              )
+              return;
+
             # Pass Validate
             # Can't handle other event except message now, discards them
             # by implement getcontent api, can retrieve msg content
-            # TODO: check msg here?
-            if event.type is 'message'
-                message = event.message
-                replyToken = event.replyToken
-                # console.log "event_type: #{event.type}, message_type: #{message.type}"
-                # @emit 'text', sourceId, replyToken, message
-                @emit message.type, sourceId, replyToken, message
+            @emitEvent event, {sourceId, sourceType}, user
 
             res.statusCode = 200
             res.send 'OK'
+
+    emitEvent: (event, source, user) ->
+      if event.type is 'message'
+          message = event.message
+          replyToken = event.replyToken
+          source.user = user if user
+          @emit message.type, source, replyToken, message
 
     # getcontent
     # TODO:
 
     # get profile
-    # TODO:
+    getProfile: (userId) ->
+      logger = @robot.logger
+      promise = new Promise((resolve, reject) ->
+        @robot.http("#{@PROFILE_URL}userId")
+          .header('Content-Type', 'application/json')
+          .header('Authorization', "Bearer #{@LINE_TOKEN}")
+          .get(json) (err, res, body) ->
+            if res.statusCode is 200
+              logger.debug "Success, response body: #{body}"
+              resolve response
+              return;
+            reject err
+            return;
+      )
+      return promise;
+
 
     # send replyobj
     # TODO:

@@ -25,7 +25,8 @@ module.exports = function(robot){
 
     robot.respond(/hello/i, function(res){
         // console.log('world');
-        console.log(util.inspect(res, false, null));
+        console.log(res);
+        console.log(res.message);
         res.reply('world');
     });
 
