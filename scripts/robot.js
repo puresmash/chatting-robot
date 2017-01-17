@@ -24,8 +24,13 @@ const LINE_TOKEN = process.env.HUBOT_LINE_TOKEN;
 module.exports = function(robot){
 
     robot.respond(/hello/i, function(res){
-        // console.log('world');
-        console.log(util.inspect(res, false, null));
+
+        const sourceType = res.message.sourceType;
+        // if USER_PROFILE is SET and sourceType === user
+        // then there will be user profile under res.message.user
+        if (sourceType === 'user') {
+          console.log(res.message.user.displayName);
+        }
         res.reply('world');
     });
 
